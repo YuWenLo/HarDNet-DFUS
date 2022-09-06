@@ -25,8 +25,8 @@ from utils.optim import set_optimizer
 def arg_parser():
     parser = argparse.ArgumentParser()
     # for training
-    parser.add_argument('--epoch', type=int, default=150, help='# epoch')
-    parser.add_argument('--batchsize', type=int, default=6, help='batch size')
+    parser.add_argument('--epoch', type=int, default=300, help='# epoch')
+    parser.add_argument('--batchsize', type=int, default=12, help='batch size')
     parser.add_argument('--kfold', type=int, default=1, help='# fold')
     parser.add_argument('--k', type=int, default=-1, help='specific # fold')
     parser.add_argument('--seed', type=int, help='random seed for split data')
@@ -43,7 +43,7 @@ def arg_parser():
     # for model
     parser.add_argument('--class-num', type=int, default=1, help='output class')
     parser.add_argument('--arch', type=int, default=53, help='backbone version')
-    parser.add_argument('--trainsize', type=int, default=512, help='img size')
+    parser.add_argument('--trainsize', type=int, default=384, help='img size')
     parser.add_argument('--weight', type=str, default='', help='path to model weight')
     parser.add_argument('--modelname', type=str, default='lawinloss4', help='choose model')
     parser.add_argument('--decoder', type=str, default='lawin', help='choose decoder')
