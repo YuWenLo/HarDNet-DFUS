@@ -17,7 +17,7 @@ def arg_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--arch', type=int, default=53, help='backbone version')
     parser.add_argument('--class-num', type=int, default=1, help='output class')
-    parser.add_argument('--test-size', type=int, default=512, help='training dataset size')
+    parser.add_argument('--test-size', type=int, default=384, help='training dataset size')
 
     parser.add_argument('--weight', nargs='+', type=str, default='weights/lawinloss4', help='path to model weight')
     parser.add_argument('--modelname', type=str, default='lawinloss4', help='choose model')
