@@ -1,4 +1,4 @@
-# HarDNet-DFUS: Enhancing Backbone and Decoder of HarDNet-MSEG for Diabetic Foot Ulcer Segmentation
+# HarDNet-DFUS: Enhancing Backbone and Decoder of HarDNet-MSEG for Diabetic Foot Ulcer Image Segmentation and Colonoscopy Polyp Segmentation
 
 
 ## 1st Place Winner in MICCAI DFUC 2022!
