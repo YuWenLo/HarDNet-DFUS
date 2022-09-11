@@ -6,7 +6,6 @@ Official PyTorch implementation of HarDNet-DFUS, contains the prediction codes f
 
 
 ## HarDNet Family
-*inference on V100*
 #### For Image Classification : [HarDNet](https://github.com/PingoLH/Pytorch-HarDNet) 78.0 top-1 acc. / 1029.76 Throughput on ImageNet-1K @224x224
 #### For Object Detection : [CenterNet-HarDNet](https://github.com/PingoLH/CenterNet-HarDNet) 44.3 mAP / 60 FPS on COCO val @512x512
 #### For Semantic Segmentation : [FC-HarDNet](https://github.com/PingoLH/FCHarDNet)  75.9% mIoU / 90.24 FPS on Cityscapes test @1024x2048
@@ -14,27 +13,36 @@ Official PyTorch implementation of HarDNet-DFUS, contains the prediction codes f
 
 
 ## Main Results
-### Performance on DFUC2022 Challenge Dataset
-We improve HarDNet-MSEG, enhancing its backbone and decoder for DFUC.
-
-| Method | DFUC Val. Stage <br> mDice | DFUC Val. Stage <br> mIoU | DFUC Testing Stage <br> mDice | DFUC Testing Stage <br>  mIoU |
-| :---: | :---: | :---: | :---: | :---: |
-| HarDNet-MSEG  | 65.53 | 55.22 | n/a | n/a |
-| **HarDNet-DFUS**  |  **70.63**  | **60.49** | **72.87** | **62.52** |
-
-### Performance on Polyp Segmentation
-| Method | Kvasir <br> mDice | ClinicDB <br> mIoU | ColonDB <br> mDice | ETIS <br>  mIoU | CVC-T <br>  mIoU | FPS |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| HarDNet-MSEG  | 0.912 | 0.932 | 0.731 | 0.677 | 0.887 | **108** |
-| HarDNet-DFUS  |  0.919  | **0.939** | **0.774** | **0.739** | 0.880 | 30 |
-| HarDNet-DFUS 5-Fold  |  **0.924**  | 0.932 | 0.773 | 0.730 | **0.896** | 6 |
-
-### Sample Inference and Visualized Results of [FUSeg Challenge Dataset](https://github.com/uwm-bigdata/wound-segmentation/tree/master/data/Foot%20Ulcer%20Segmentation%20Challenge)
-
 <p align="center">
-<img src="SAMPLE.png" width=90% height=90% 
+<img src="lands.png" width=190% height=100% 
 class="center">
 </p>
+
+
+### Performance on Kvasir-SEG Dataset
+(Training/Testing split = 1450 from 5 datasets /100 from Kvasir-SEG according to [PraNet: Parallel Reverse Attention Network for Polyp Segmentation](https://arxiv.org/abs/2006.11392)) (FPS measures on 2080Ti)
+|                 Models                 | mDice | mIoU  |  wfm  |  Sm   |  MAE  | maxEm | FPS |
+|:--------------------------------------:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:---:|
+|                 U-Net                  | 0.818 | 0.746 | 0.794 | 0.858 | 0.055 | 0.893 | 11  |
+|                U-Net++                 | 0.821 | 0.743 | 0.808 | 0.862 | 0.048 | 0.910 | 25  |
+|                  SFA                   | 0.723 | 0.611 | 0.67  | 0.782 | 0.075 | 0.849 | 40  |
+|                 PraNet                 | 0.898 | 0.840 | 0.885 | 0.915 | 0.030 | 0.948 | 66  |
+|              HarDNet-MSEG              | 0.912 | 0.857 | 0.903 | 0.923 | 0.025 | 0.958 | **88**  |
+|              HarDNet-DFUS              | 0.919 |   -   |   -   |   -   |   -   |   -   | -  |
+| HarDNet-DFUS <br> with 5-Fold ensemble | **0.924** |   -   |   -   |   -   |   -   |   -   |  -  |
+
+
+### Performance on other Polyp Segmentation Dataset
+(FPS measures on V100)
+|                 Models                 | Kvasir <br> mDice | ClinicDB <br> mDice | ColonDB <br> mDice | ETIS <br>  mDice | CVC-T <br>  mDice |   FPS   |
+|:--------------------------------------:|:-----------------:|:-------------------:|:------------------:|:----------------:|:-----------------:|:-------:|
+|              HarDNet-MSEG              |       0.912       |        0.932        |       0.731        |      0.677       |       0.887       | **108** |
+|              HarDNet-DFUS              |       0.919       |      **0.939**      |     **0.774**      |    **0.739**     |       0.880       |   30    |
+| HarDNet-DFUS <br> with 5-Fold ensemble |     **0.924**     |        0.932        |       0.773        |      0.730       |     **0.896**     |    6    |
+
+### Sample Inference and Visualized Results of Kvasir-SEG Dataset
+
+
 
 ## HarDNet-DFUS Architecture
 <p align="center">
@@ -44,16 +52,26 @@ class="center">
 
 
 ## Installation & Usage
-### Environment setting (Prerequisites)
-```
-conda create -n dfuc python=3.6
-conda activate dfuc
-pip install -r requirements.txt
-```
+- Environment setting (Prerequisites)
+    ```
+    conda create -n dfuc python=3.6
+    conda activate dfuc
+    pip install -r requirements.txt
+    ```
+
+- Downloading necessary data:
+    **For each Dataset training including Kvasir-SEG, CVC-ColonDB, EndoScene, ETIS-Larib Polyp DB and CVC-Clinic DB from**
+    [**PraNet: Parallel Reverse Attention Network for Polyp Segmentation**](https://arxiv.org/abs/2006.11392)
+    
+    + downloading testing dataset and move it into your test_path
+    which can be found in this [download link (Google Drive)](https://drive.google.com/file/d/1o8OfBvYE6K-EpDyvzsmMPndnUMwb540R/view?usp=sharing).
+    
+    + downloading training dataset and move it into your train_path
+    which can be found in this [download link (Google Drive)](https://drive.google.com/file/d/1lODorfB33jbd-im-qrtUgWnZXxB94F55/view?usp=sharing).
 
 ### Training
 
-1. Download [weights](https://drive.google.com/drive/folders/1UbuMKLUlCsZAusUVLJqwcBaXiwe0ZUe8?usp=sharing) and place in the folder ``` /weights ``` 
+1. Download pretrain_weight: [kingnet53.pth for HarDNetV2-53](https://drive.google.com/drive/folders/1UbuMKLUlCsZAusUVLJqwcBaXiwe0ZUe8?usp=sharing) and place in the folder ``` /weights ``` 
 2. Run:
     ```
     python train.py --rect --augmentation --data_path /path/to/training/data
@@ -93,13 +111,6 @@ Optional Args:
 --data_path    Path to evaluated data
 ```
 
-## Reproduce our best submission in DFUC 2022 Challenge Testing Stage 
-
-1. Download [the weights for HarDNet-DFUS](https://drive.google.com/drive/folders/15hhsl1CIvOqa60friINmhnMB3qKRD-5p?usp=sharing) and place them in the same folder, specifying the folder in --weight when testing. (Please ensure there is no other weight in the folder to obtain the same result.)   
-2. Run **HarDNet-DFUS with 5-fold cross validation and TTA vhflip** : 
-    ```
-    python test.py --rect --modelname lawinloss4 --weight /path/to/HarDNet-DFUS_weight/folder --data_path /path/to/testing/data --tta vh
-    ```
 
 ## Acknowledgement
 - This research is supported in part by a grant from the **Ministry of Science and Technology (MOST) of Taiwan**.   
