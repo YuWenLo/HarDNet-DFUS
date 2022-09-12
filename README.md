@@ -1,9 +1,7 @@
 # HarDNet-DFUS: An Enhanced Harmonically-Connected Network for Diabetic Foot Ulcer Image Segmentation and Colonoscopy Polyp Segmentation
 
-
-## 1st Place Winner in MICCAI DFUC 2022!
-Official PyTorch implementation of HarDNet-DFUS, contains the prediction codes for our submission to the **Diabetic Foot Ulcer Segmentation Challenge 2022 (DFUC2022)** at **MICCAI2022**.
-
+This github is for polyp segmentation.
+For Diabetic Foot Ulcer Image Segmentation, see https://github.com/kytimmylai/DFUC2022.
 
 ## HarDNet Family
 #### For Image Classification : [HarDNet](https://github.com/PingoLH/Pytorch-HarDNet) 78.0 top-1 acc. / 1029.76 Throughput on ImageNet-1K @224x224
