@@ -11,11 +11,6 @@ For Diabetic Foot Ulcer Image Segmentation, see https://github.com/kytimmylai/DF
 
 
 ## Main Results
-<p align="center">
-<img src="lands.png" width=190% height=100% 
-class="center">
-</p>
-
 
 ### Performance on Kvasir-SEG Dataset
 (Training/Testing split = 1450 from 5 datasets /100 from Kvasir-SEG according to [PraNet: Parallel Reverse Attention Network for Polyp Segmentation](https://arxiv.org/abs/2006.11392)) (FPS measures on 2080Ti)
