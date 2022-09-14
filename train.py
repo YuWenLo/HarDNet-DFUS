@@ -33,7 +33,6 @@ def arg_parser():
     parser.add_argument('--lr', type=float, default=1e-4, help='learning rate')
     parser.add_argument('--name', type=str, default='exp', help='exp name to annotate this training')
     parser.add_argument('--optimizer', type=str, default='AdamW', help='choose optimizer')
-    parser.add_argument('--eval', action='store_true', help='run test')
 
     # for data
     parser.add_argument('--dataratio', type=float,default=0.8, help='ratio of data for training/val')
@@ -198,37 +197,32 @@ if __name__ == '__main__':
         if opt.weight != '':
             model.load_state_dict(torch.load(opt.weight))#, map_location=device))
         
-        if opt.eval:
-            dice, val_loss = test(model, criterion, test_loader)
-            print("Mean dice = ", dice)
+        print('Start training at rank: ', opt.global_rank)
+        best = 0
+        rec = np.zeros((6, opt.epoch))
+        for epoch in range(opt.epoch):
+            optimizer.zero_grad()
+            loss, deep1, deep2= train(train_loader, model, optimizer, epoch, opt, scaler, ema, criterion)
+            scheduler.step()
 
-        else:
-            print('Start training at rank: ', opt.global_rank)
-            best = 0
-            rec = np.zeros((6, opt.epoch))
-            for epoch in range(opt.epoch):
-                optimizer.zero_grad()
-                loss, deep1, deep2= train(train_loader, model, optimizer, epoch, opt, scaler, ema, criterion)
-                scheduler.step()
+            meandice, val_loss = test(model, criterion, test_loader)
+            if meandice > best:
+                best = meandice
+                if best > 0.8:
+                    pthname = os.path.join(save_path, '%s_%g,%g_best_%g.pth'%(opt.name, k+1, opt.kfold, int(best*10000)))
+                    torch.save(model.state_dict(),  pthname)
+                    print('[Saving Best Weight]', pthname)
+            rec[0, epoch] = loss
+            rec[1, epoch] = deep1
+            rec[2, epoch] = deep2
+            rec[3, epoch] = meandice
+            rec[4, epoch] = best
+            rec[5, epoch] = val_loss
+            logging.info('Epoch: %g,mDice: %g,Best mDice: %g,loss: %g,loss2: %g,loss3: %g,lr: %g'%(epoch, meandice, best, loss, deep1, deep2, scheduler.get_last_lr()[0]))
+            print("best meandice: ", best)
 
-                meandice, val_loss = test(model, criterion, test_loader)
-                if meandice > best:
-                    best = meandice
-                    if best > 0.8:
-                        pthname = os.path.join(save_path, '%s_%g,%g_best_%g.pth'%(opt.name, k+1, opt.kfold, int(best*10000)))
-                        torch.save(model.state_dict(),  pthname)
-                        print('[Saving Best Weight]', pthname)
-                rec[0, epoch] = loss
-                rec[1, epoch] = deep1
-                rec[2, epoch] = deep2
-                rec[3, epoch] = meandice
-                rec[4, epoch] = best
-                rec[5, epoch] = val_loss
-                logging.info('Epoch: %g,mDice: %g,Best mDice: %g,loss: %g,loss2: %g,loss3: %g,lr: %g'%(epoch, meandice, best, loss, deep1, deep2, scheduler.get_last_lr()[0]))
-                print("best meandice: ", best)
-
-            torch.save(model.state_dict(), os.path.join(save_path, '%s_%g,%g_final_%g.pth'%(opt.name, k+1, opt.kfold, int(best*10000))))
-            trainingplot(rec, os.path.join(save_path, '%s_%g,%g_final_%g.pdf'%(opt.name, k+1, opt.kfold, int(best*10000))))
+        torch.save(model.state_dict(), os.path.join(save_path, '%s_%g,%g_final_%g.pth'%(opt.name, k+1, opt.kfold, int(best*10000))))
+        trainingplot(rec, os.path.join(save_path, '%s_%g,%g_final_%g.pdf'%(opt.name, k+1, opt.kfold, int(best*10000))))
         
         if opt.k != -1:
             break
