@@ -21,7 +21,7 @@ For Diabetic Foot Ulcer Image Segmentation, see https://github.com/kytimmylai/DF
 |                  SFA                   | 0.723 | 0.611 | 0.67  | 0.782 | 0.075 | 0.849 | 40  |
 |                 PraNet                 | 0.898 | 0.840 | 0.885 | 0.915 | 0.030 | 0.948 | 66  |
 |              HarDNet-MSEG              | 0.912 | 0.857 | 0.903 | 0.923 | 0.025 | 0.958 | **88**  |
-|              HarDNet-DFUS              | 0.919 |   -   |   -   |   -   |   -   |   -   | 22  |
+|              HarDNet-DFUS              | 0.919 | 0.868 |   -   |   -   |   -   |   -   | 22  |
 | HarDNet-DFUS <br> with 5-Fold ensemble | **0.924** |   0.871   |   0.918   |   0.924   |   0.022   |   0.961   |  4  |
 
 
