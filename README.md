@@ -22,7 +22,7 @@ For Diabetic Foot Ulcer Image Segmentation, see https://github.com/kytimmylai/DF
 |                 PraNet                 | 0.898 | 0.840 | 0.885 | 0.915 | 0.030 | 0.948 | 66  |
 |              HarDNet-MSEG              | 0.912 | 0.857 | 0.903 | 0.923 | 0.025 | 0.958 | **88**  |
 |              HarDNet-DFUS              | 0.919 |   -   |   -   |   -   |   -   |   -   | 22  |
-| HarDNet-DFUS <br> with 5-Fold ensemble | **0.924** |   -   |   -   |   -   |   -   |   -   |  4  |
+| HarDNet-DFUS <br> with 5-Fold ensemble | **0.924** |   0.871   |   0.918   |   0.924   |   0.022   |   0.961   |  4  |
 
 
 ### Performance on other Polyp Segmentation Dataset
