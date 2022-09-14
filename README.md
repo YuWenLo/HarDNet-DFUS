@@ -26,12 +26,19 @@ For Diabetic Foot Ulcer Image Segmentation, see https://github.com/kytimmylai/DF
 
 
 ### Performance on other Polyp Segmentation Dataset
-(FPS measures on V100)
+(FPS measures on V100) meandice
 |                 Models                 | Kvasir <br> mDice | ClinicDB <br> mDice | ColonDB <br> mDice | ETIS <br>  mDice | CVC-T <br>  mDice |   FPS   |
 |:--------------------------------------:|:-----------------:|:-------------------:|:------------------:|:----------------:|:-----------------:|:-------:|
 |              HarDNet-MSEG              |       0.912       |        0.932        |       0.731        |      0.677       |       0.887       | **108** |
 |              HarDNet-DFUS              |       0.919       |      **0.939**      |     **0.774**      |    **0.739**     |       0.880       |   30    |
 | HarDNet-DFUS <br> with 5-Fold ensemble |     **0.924**     |        0.932        |       0.773        |      0.730       |     **0.896**     |    6    |
+
+(FPS measures on V100)mIoU
+|                 Models                 | Kvasir <br> mDice | ClinicDB <br> mDice | ColonDB <br> mDice | ETIS <br>  mDice | CVC-T <br>  mDice |   FPS   |
+|:--------------------------------------:|:-----------------:|:-------------------:|:------------------:|:----------------:|:-----------------:|:-------:|
+|              HarDNet-MSEG              |                   |                     |                    |                  |                  | **108** |
+|              HarDNet-DFUS              |      0.868        |        0.896        |        0.696       |      0.657       |     0.804        |   30    |
+| HarDNet-DFUS <br> with 5-Fold ensemble |    **0.871**      |        0.885        |        0.703       |                  |      0.824       |    6    |
 
 ### Sample Inference and Visualized Results of Kvasir-SEG Dataset
 
