@@ -103,12 +103,11 @@ Optional Args:
 ### Evaluation
 Run:
 ```
-python train.py --eval --rect --weight path/to/weight/or/folder --data_path path/to/testing/data
+python evaluate.py --image_root path/to/image/folder --gt_root path/to/ground truth/folder
 
 Optional Args:
---rect         Padding image to square before resize to keep its aspect ratio
---weight       It can be a weight or a fold. If it's a folder, the result is the mean of each weight result
---data_path    Path to evaluated data
+--image_root    Path to predict result data
+--gt_root       Path to ground truth data
 ```
 
 
