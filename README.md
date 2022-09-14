@@ -21,8 +21,8 @@ For Diabetic Foot Ulcer Image Segmentation, see https://github.com/kytimmylai/DF
 |                  SFA                   | 0.723 | 0.611 | 0.67  | 0.782 | 0.075 | 0.849 | 40  |
 |                 PraNet                 | 0.898 | 0.840 | 0.885 | 0.915 | 0.030 | 0.948 | 66  |
 |              HarDNet-MSEG              | 0.912 | 0.857 | 0.903 | 0.923 | 0.025 | 0.958 | **88**  |
-|              HarDNet-DFUS              | 0.919 | 0.868 |   -   |   -   |   -   |   -   | 22  |
-| HarDNet-DFUS <br> with 5-Fold ensemble | **0.924** |   0.871   |   0.918   |   0.924   |   0.022   |   0.961   |  4  |
+|              HarDNet-DFUS              | 0.917 | 0.863 | 0.912 | 0.919 | 0.024 |  0.956 | 22  |
+| HarDNet-DFUS <br> with 5-Fold ensemble | **0.924** | 0.872 | 0.919 | 0.925 | 0.022 | 0.962|  4  |
 
 
 ### Performance on other Polyp Segmentation Dataset
@@ -33,12 +33,12 @@ For Diabetic Foot Ulcer Image Segmentation, see https://github.com/kytimmylai/DF
 |              HarDNet-DFUS              |       0.919       |      **0.939**      |     **0.774**      |    **0.739**     |       0.880       |   30    |
 | HarDNet-DFUS <br> with 5-Fold ensemble |     **0.924**     |        0.932        |       0.773        |      0.730       |     **0.896**     |    6    |
 
-(FPS measures on V100)mIoU
+(FPS measures on V100) mIoU
 |                 Models                 | Kvasir <br> mDice | ClinicDB <br> mDice | ColonDB <br> mDice | ETIS <br>  mDice | CVC-T <br>  mDice |   FPS   |
 |:--------------------------------------:|:-----------------:|:-------------------:|:------------------:|:----------------:|:-----------------:|:-------:|
-|              HarDNet-MSEG              |                   |                     |                    |                  |                  | **108** |
+|              HarDNet-MSEG              |      0.857        |        0.882        |        0.660       |      0.613       |     0.821        | **108** |
 |              HarDNet-DFUS              |      0.868        |        0.896        |        0.696       |      0.657       |     0.804        |   30    |
-| HarDNet-DFUS <br> with 5-Fold ensemble |    **0.871**      |        0.885        |        0.703       |                  |      0.824       |    6    |
+| HarDNet-DFUS <br> with 5-Fold ensemble |    **0.871**      |        0.885        |        0.703       |      0.659       |      0.824       |    6    |
 
 ### Sample Inference and Visualized Results of Kvasir-SEG Dataset
 
