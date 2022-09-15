@@ -30,14 +30,14 @@ For Diabetic Foot Ulcer Image Segmentation, see https://github.com/kytimmylai/DF
 |                 Models                 | Kvasir <br> mDice | ClinicDB <br> mDice | ColonDB <br> mDice | ETIS <br>  mDice | CVC-T <br>  mDice |   FPS   |
 |:--------------------------------------:|:-----------------:|:-------------------:|:------------------:|:----------------:|:-----------------:|:-------:|
 |              HarDNet-MSEG              |       0.912       |        0.932        |       0.731        |      0.677       |       0.887       | **108** |
-|              HarDNet-DFUS              |       0.918       |      **0.939**      |     **0.774**      |                  |       0.876       |   30    |
+|              HarDNet-DFUS              |       0.918       |      **0.939**      |     **0.774**      |      0.730       |       0.876       |   30    |
 | HarDNet-DFUS <br> with 5-Fold ensemble |     **0.924**     |        0.932        |       0.773        |      0.730       |     **0.896**     |    6    |
 
 (FPS measures on V100) mIoU
 |                 Models                 | Kvasir <br> mIoU  | ClinicDB <br> mIoU  | ColonDB <br> mIoU  | ETIS <br>  mIoU  | CVC-T <br>  mIoU  |   FPS   |
 |:--------------------------------------:|:-----------------:|:-------------------:|:------------------:|:----------------:|:-----------------:|:-------:|
 |              HarDNet-MSEG              |      0.857        |        0.882        |       0.660        |      0.613       |     0.821        | **108** |
-|              HarDNet-DFUS              |      0.864        |      **0.893**      |       0.695        |                  |     0.796        |   30    |
+|              HarDNet-DFUS              |      0.864        |      **0.893**      |       0.695        |      0.646       |     0.796        |   30    |
 | HarDNet-DFUS <br> with 5-Fold ensemble |    **0.871**      |        0.885        |     **0.703**      |    **0.659**     |    **0.824**     |    6    |
 
 ### Sample Inference and Visualized Results of Kvasir-SEG Dataset
