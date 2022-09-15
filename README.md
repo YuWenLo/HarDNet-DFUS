@@ -41,7 +41,10 @@ For Diabetic Foot Ulcer Image Segmentation, see https://github.com/kytimmylai/DF
 | HarDNet-DFUS <br> with 5-Fold ensemble |    **0.871**      |        0.885        |        0.703       |      0.659       |      0.824       |    6    |
 
 ### Sample Inference and Visualized Results of Kvasir-SEG Dataset
-
+<p align="center">
+<img src="SAMPLE.png" width=90% height=90% 
+class="center">
+</p>
 
 
 ## HarDNet-DFUS Architecture
