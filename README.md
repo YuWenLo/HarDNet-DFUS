@@ -117,3 +117,14 @@ Optional Args:
 ## Acknowledgement
 - This research is supported in part by a grant from the **Ministry of Science and Technology (MOST) of Taiwan**.   
 We thank **National Center for High-performance Computing (NCHC)** for providing computational and storage resources.        
+
+## Citation
+'''
+  @inproceedings{chao2019hardnet,
+  title={Hardnet: A low memory traffic network},
+  author={Chao, Ping and Kao, Chao-Yang and Ruan, Yu-Shan and Huang, Chien-Hsiang and Lin, Youn-Long},
+  booktitle={Proceedings of the IEEE International Conference on Computer Vision},
+  pages={3552--3561},
+  year={2019}
+  }
+'''
