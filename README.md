@@ -119,7 +119,17 @@ Optional Args:
 We thank **National Center for High-performance Computing (NCHC)** for providing computational and storage resources.        
 
 ## Citation
+If you find this project useful for your research, please use the following BibTeX entry.
 ```
+  @misc{https://doi.org/10.48550/arxiv.2209.07313,
+  title = {HarDNet-DFUS: An Enhanced Harmonically-Connected Network for Diabetic Foot Ulcer Image Segmentation and Colonoscopy Polyp Segmentation},
+  author = {Liao, Ting-Yu and Yang, Ching-Hui and Lo, Yu-Wen and Lai, Kuan-Ying and Shen, Po-Huai and Lin, Youn-Long},
+  year = {2022},
+  eprint={2209.07313},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV}
+  }
+
   @inproceedings{chao2019hardnet,
   title={Hardnet: A low memory traffic network},
   author={Chao, Ping and Kao, Chao-Yang and Ruan, Yu-Shan and Huang, Chien-Hsiang and Lin, Youn-Long},
