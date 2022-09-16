@@ -30,8 +30,8 @@ For Diabetic Foot Ulcer Image Segmentation, see https://github.com/kytimmylai/DF
 |                 Models                 | Kvasir <br> mDice | ClinicDB <br> mDice | ColonDB <br> mDice | ETIS <br>  mDice | CVC-T <br>  mDice |   FPS   |
 |:--------------------------------------:|:-----------------:|:-------------------:|:------------------:|:----------------:|:-----------------:|:-------:|
 |              HarDNet-MSEG              |       0.912       |        0.932        |       0.731        |      0.677       |       0.887       | **108** |
-|              HarDNet-DFUS              |       0.918       |      **0.939**      |     **0.774**      |      0.730       |       0.876       |   30    |
-| HarDNet-DFUS <br> with 5-Fold ensemble |     **0.924**     |        0.932        |       0.773        |      0.730       |     **0.896**     |    6    |
+|              HarDNet-DFUS              |       0.918       |      **0.939**      |     **0.774**      |      **0.730**       |       0.876       |   30    |
+| HarDNet-DFUS <br> with 5-Fold ensemble |     **0.924**     |        0.932        |       0.773        |      **0.730**       |     **0.896**     |    6    |
 
 (FPS measures on V100) mIoU
 |                 Models                 | Kvasir <br> mIoU  | ClinicDB <br> mIoU  | ColonDB <br> mIoU  | ETIS <br>  mIoU  | CVC-T <br>  mIoU  |   FPS   |
