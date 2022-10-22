@@ -222,7 +222,7 @@ class test_dataset(data.Dataset):
             transforms.Resize((self.trainsize, self.trainsize)),
             transforms.ToTensor(), 
             #transforms.Normalize(mean, std)])
-            transforms.Normalize([0.6262, 0.5736, 0.5512], [0.1561, 0.1819, 0.1938])])
+            transforms.Normalize([0.485, 0.456, 0.406],[0.229, 0.224, 0.225])])
             
     def __getitem__(self, index):
         name = self.images[index]
