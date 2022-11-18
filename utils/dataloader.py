@@ -140,7 +140,7 @@ class create_dataset(data.Dataset):
         else:
             print("no data augmentation")
             self.transform = A.Compose([A.Resize(self.trainsize, self.trainsize)])
-        self.nom = transforms.Normalize([0.6262, 0.5736, 0.5512], [0.1561, 0.1819, 0.1938])
+        self.nom = transforms.Normalize([0.485, 0.456, 0.406],[0.229, 0.224, 0.225])
         self.totensor = A.Compose([ToTensorV2()])
         
     def __getitem__(self, index):
