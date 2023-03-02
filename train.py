@@ -29,14 +29,15 @@ def arg_parser():
     parser.add_argument('--batchsize', type=int, default=12, help='batch size')
     parser.add_argument('--kfold', type=int, default=1, help='# fold')
     parser.add_argument('--k', type=int, default=-1, help='specific # fold')
-    parser.add_argument('--seed', type=int, help='random seed for split data')
+    parser.add_argument('--seed', type=int, default=42, help='random seed for split data')
     parser.add_argument('--lr', type=float, default=1e-4, help='learning rate')
     parser.add_argument('--name', type=str, default='exp', help='exp name to annotate this training')
     parser.add_argument('--optimizer', type=str, default='AdamW', help='choose optimizer')
 
     # for data
     parser.add_argument('--dataratio', type=float,default=0.8, help='ratio of data for training/val')
-    parser.add_argument('--data_path', nargs='+', type=str, default='../', help='path to training data')
+    parser.add_argument('--train_path', nargs='+', type=str, default='Kvasir-SEG_1000/Kvasir-SEG/', help='path to training data')
+    parser.add_argument('--test_path', nargs='+', type=str, default='Kvasir-SEG_1000/Kvasir-SEG/' , help='path to testing data')
     parser.add_argument('--augmentation', action='store_true', help='activate data augmentation')
 
     # for model
@@ -175,11 +176,11 @@ if __name__ == '__main__':
             if opt.k != -1:
                 k = opt.k
                 
-        train_dataset = create_dataset(opt.data_path, opt.trainsize, opt.augmentation, True, opt.dataratio, opt.rect, k=k, k_fold=opt.kfold, seed=opt.seed)
+        train_dataset = create_dataset(opt.train_path, opt.trainsize, opt.augmentation, True, opt.dataratio, opt.rect, k=k, k_fold=opt.kfold, seed=opt.seed)
         train_loader = data.DataLoader(dataset=train_dataset, batch_size=opt.batchsize, shuffle=True, num_workers=4, pin_memory=True)
         del train_dataset
 
-        test_dataset = create_dataset(opt.data_path, opt.trainsize, False, False, opt.dataratio, opt.rect, k=k, k_fold=opt.kfold, seed=opt.seed)
+        test_dataset = create_dataset(opt.test_path, opt.trainsize, False, False, opt.dataratio, opt.rect, k=k, k_fold=opt.kfold, seed=opt.seed)
         test_loader = data.DataLoader(dataset=test_dataset, batch_size=1, shuffle=True, num_workers=4, pin_memory=True)
         del test_dataset
         
