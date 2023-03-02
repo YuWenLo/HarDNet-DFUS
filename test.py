@@ -93,10 +93,11 @@ if __name__ == '__main__':
     
     weightlist = []
     for weight in opt.weight if isinstance(opt.weight, list) else [opt.weight]:
-        for w in sorted(os.listdir(weight)):
-            if '.pth' in w:
-                weightlist.append(os.path.join(weight, w))
-        opt.weight = weightlist
+        if os.path.isdir(weight):
+            for w in sorted(os.listdir(weight)):
+                if '.pth' in w:
+                    weightlist.append(os.path.join(weight, w))
+            opt.weight = weightlist
     
     fold_result = None
     fold = len(opt.weight)
