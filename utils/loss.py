@@ -23,12 +23,6 @@ class Lossncriterion(nn.Module):
         intersection = torch.sum(inputs * targets)
         dice = (2 * intersection) / ((inputs.sum() + targets.sum()) * 1.0)
         return dice
-    
-    def binary_dice(self, inputs, targets):
-        smooth = 1.
-        intersection = torch.sum(inputs * targets)
-        dice = (2 * intersection + smooth) / (inputs.pow(2).sum() + targets.pow(2).sum() + smooth)
-        return 1 - dice
         
     def forward(self, inputs, target):
         wbce, wiou = structure_loss(inputs, target)
