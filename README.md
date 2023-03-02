@@ -30,7 +30,7 @@
 | HarDNet-DFUS <br> with 5-Fold ensemble | **0.924** | **0.872** | **0.919** | **0.925** | **0.022** | **0.962**|  4  |
 
 
-### Performance on other Polyp Segmentation Dataset
+#### Performance on other Polyp Segmentation Dataset
 (FPS measures on V100) meandice
 |                 Models                 | Kvasir <br> mDice | ClinicDB <br> mDice | ColonDB <br> mDice | ETIS <br>  mDice | CVC-T <br>  mDice |   FPS   |
 |:--------------------------------------:|:-----------------:|:-------------------:|:------------------:|:----------------:|:-----------------:|:-------:|
@@ -55,9 +55,9 @@ Segmentation](https://arxiv.org/abs/2208.08352))(FPS measures on 2080Ti)
 |              HarDNet-MSEG              | 0.9139 | 0.8624 | - | - | - | - | **88**  |
 |              SSFormer                  | 0.9357 | 0.8905 | - | - | - | - | -  |
 |              FCBFormer                 | **0.9385** | **0.8903** | - | - | - | - | -  |
-|              HarDNet-DFUS              | 0.9363 | 0.8894 | 0.911 | 0.920 | 0.024 | 0.956 | 22  |
+|              HarDNet-DFUS              | 0.9363 | 0.8894 | - | - |- | - | 22  |
 
-### Performance on other Polyp Segmentation Dataset
+#### Performance on other Polyp Segmentation Dataset
 (FPS measures on V100) meandice
 |                 Models                 | Kvasir <br> mDice | ClinicDB <br> mDice |   FPS   |
 |:--------------------------------------:|:-----------------:|:-------------------:|:-------:|
