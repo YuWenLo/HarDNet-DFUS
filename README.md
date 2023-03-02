@@ -1,9 +1,11 @@
-# HarDNet-DFUS: An Enhanced Harmonically-Connected Network for Diabetic Foot Ulcer Image Segmentation and Colonoscopy Polyp Segmentation
+# HarDNet-DFUS: An Enhanced Harmonically-Connected Network for Colonoscopy Polyp Segmentation
 
 > Arxiv Paper : [**HarDNet-DFUS: An Enhanced Harmonically-Connected Network for Diabetic Foot Ulcer Image Segmentation and Colonoscopy Polyp Segmentation**](https://arxiv.org/abs/2209.07313)
 
 > This GitHub is for polyp segmentation.
-For Diabetic Foot Ulcer Image Segmentation, see **https://github.com/kytimmylai/DFUC2022**.
+
+> For Diabetic Foot Ulcer Image Segmentation, see **https://github.com/kytimmylai/DFUC2022**.
+> For Skin Lesions Segmentation, see **https://github.com/wendyliao00/HarDNet-DFUS**.
 
 ## HarDNet Family
 #### For Image Classification : [HarDNet](https://github.com/PingoLH/Pytorch-HarDNet) 78.0 top-1 acc. / 1029.76 Throughput on ImageNet-1K @224x224
