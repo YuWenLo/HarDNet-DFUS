@@ -132,7 +132,7 @@ class create_dataset(data.Dataset):
             
             #mean, std = calculatemns(self.images, self.trainsize, self.rect)
             #print('mean:', mean, ' std:', std)
-            train_idx, val_idx = split_data(length, self.ratio, k=k, seed=seed, k_fold=k_fold)
+            train_idx, val_idx, test_idx = split_data(length, self.ratio, k=k, seed=seed, k_fold=k_fold)
             
             if train:
                 if self.ratio != 1:
