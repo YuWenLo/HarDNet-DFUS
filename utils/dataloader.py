@@ -12,6 +12,7 @@ from albumentations.pytorch import ToTensorV2
 from utils.utils import square_padding
 from pathlib import Path
 from PIL import Image
+from sklearn.model_selection import train_test_split
 
 
 
@@ -41,7 +42,7 @@ def calculatemns(img_list, size, rect):
     return mean, std
 
 
-def split_data(length, ratio, k=0, seed=7414, k_fold=1):
+def split_data(length, ratio, k=0, seed=42, k_fold=1):
     ''' Randomly choose the index of training/dalidation data
     Args:
         length: length of collected data
@@ -50,15 +51,49 @@ def split_data(length, ratio, k=0, seed=7414, k_fold=1):
         seed: seed for reproducing the random result
         k_fold: # fold for cross-validation
     '''
-    random.seed(seed)
-    val_idx = random.sample(range(length), k=length)
+    if ratio == 1:
+        random.seed(seed)
+        val_idx = random.sample(range(length), k=length)
+        if k_fold == 1:
+            val_idx = val_idx[:round(length * (1-ratio))]
+        else:
+            val_idx = val_idx[(length//k_fold)*k: (length//k_fold)*(k+1)]
+        
+        train_idx = [x for x in range(length) if x not in val_idx]
+        return train_idx, val_idx, val_idx
+    elif ratio == 0:
+        val_idx = np.linspace(0, length - 1, length).astype("int")
+        return val_idx, val_idx, val_idx
+        
+    train_size = int(ratio * length)
+    valid_size = int(round(length * (1-ratio)/2))
+    test_size = int(round(length * (1-ratio)/2))
+
+    train_indices, test_indices = train_test_split(
+        np.linspace(0, length - 1, length).astype("int"),
+        test_size=test_size,
+        random_state=seed,
+    )
+
     if k_fold == 1:
-        val_idx = val_idx[:round(length * (1-ratio))]
+        train_indices, val_indices = train_test_split(
+            train_indices, test_size=valid_size, random_state=seed
+        )
+
+        print(len(train_indices), " ", len(val_indices), " ", len(test_indices))
+        return train_indices, val_indices, test_indices
+
     else:
-        val_idx = val_idx[(length//k_fold)*k: (length//k_fold)*(k+1)]
-    
-    train_idx = [x for x in range(length) if x not in val_idx]
-    return train_idx, val_idx
+        train_indices, val_indices = train_test_split(
+            train_indices, test_size=valid_size, random_state=seed
+        )
+        fold_length = length - test_size - valid_size
+        val_idx = train_indices
+        val_idx = val_idx[(fold_length//k_fold)*k: (fold_length//k_fold)*(k+1)]
+        train_idx = [x for x in train_indices if x not in val_idx]
+
+        print(len(train_idx), " ", len(val_idx), " ", len(test_indices))
+        return train_idx, val_idx, test_indices
 
 
 # -
@@ -125,8 +160,8 @@ class create_dataset(data.Dataset):
             print("data augmentation 2")
             self.transform = A.Compose([
                 A.OneOf([
-                    A.CenterCrop(480, 480, p=1),
-                    A.RandomCrop(480, 480, p=1),
+                    A.CenterCrop(self.trainsize, self.trainsize, p=1),
+                    A.RandomCrop(self.trainsize, self.trainsize, p=1),
                 ], p=0.3),
                 A.HorizontalFlip(p=0.5),
                 A.VerticalFlip(p=0.5),
@@ -153,13 +188,6 @@ class create_dataset(data.Dataset):
         gt = cv2.imread(self.gts[index], cv2.IMREAD_GRAYSCALE)
         name = self.gts[index]
         
-        if self.augmentations:
-            total = self.transform(image=image, mask=gt)
-            image = total["image"]
-            gt = total['mask']
-            total = A.ColorJitter(brightness=0.5, contrast=0.5, saturation=0, hue=0, p=0.3)(image=image)
-            image = total["image"]
-        
         if self.rect:
             if image.shape[0] > image.shape[1]:
                 total = A.PadIfNeeded(p=1, min_height=image.shape[0], min_width=image.shape[0], border_mode=cv2.BORDER_CONSTANT, value=0, mask_value=0)(image=image, mask=gt)
@@ -173,6 +201,13 @@ class create_dataset(data.Dataset):
                 assert image.shape[0] == image.shape[1], '2, %s, %g/%g' % (self.images[index], image.shape[0], image.shape[1])
             else:
                 pass
+            
+        if self.augmentations:
+            total = self.transform(image=image, mask=gt)
+            image = total["image"]
+            gt = total['mask']
+            total = A.ColorJitter(brightness=0.5, contrast=0.5, saturation=0, hue=0, p=0.3)(image=image)
+            image = total["image"]
             
         total = A.Resize(self.trainsize, self.trainsize)(image=image, mask=gt)
         image = total["image"]
