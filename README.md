@@ -17,7 +17,7 @@
 
 ## Main Results
 
-### Performance on Kvasir-SEG Dataset
+### Performance on Kvasir-SEG Dataset 1450
 (Training/Testing split = 1450 from 5 datasets /100 from Kvasir-SEG according to [PraNet: Parallel Reverse Attention Network for Polyp Segmentation](https://arxiv.org/abs/2006.11392)) (FPS measures on 2080Ti)
 |                 Models                 | mDice | mIoU  |  wfm  |  Sm   |  MAE  | maxEm | FPS |
 |:--------------------------------------:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:---:|
@@ -44,6 +44,35 @@
 |              HarDNet-MSEG              |      0.857        |        0.882        |       0.660        |      0.613       |     0.821        | **108** |
 |              HarDNet-DFUS              |      0.864        |      **0.893**      |       0.695        |      0.646       |     0.796        |   30    |
 | HarDNet-DFUS <br> with 5-Fold ensemble |    **0.871**      |        0.885        |     **0.703**      |    **0.659**     |    **0.824**     |    6    |
+
+### Performance on Kvasir-SEG Dataset 1000
+(Training/Validating/Testing split = 800/100/100 according to [FCN-Transformer Feature Fusion for Polyp
+Segmentation](https://arxiv.org/abs/2208.08352))(FPS measures on 2080Ti)
+|                 Models                 | mDice | mIoU  |  wfm  |  Sm   |  MAE  | maxEm | FPS |
+|:--------------------------------------:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:---:|
+|                 U-Net                  | 0.7821 | 0.8141 | - | - | - | - | -  |
+|                 PraNet                 | 0.9011 | 0.8403 | - | - | - | - | -  |
+|              HarDNet-MSEG              | 0.9139 | 0.8624 | - | - | - | - | **88**  |
+|              SSFormer                  | 0.9357 | 0.8905 | - | - | - | - | -  |
+|              FCBFormer                 | **0.9385** | **0.8903** | - | - | - | - | -  |
+|              HarDNet-DFUS              | 0.9363 | 0.8894 | 0.911 | 0.920 | 0.024 | 0.956 | 22  |
+
+### Performance on other Polyp Segmentation Dataset
+(FPS measures on V100) meandice
+|                 Models                 | Kvasir <br> mDice | ClinicDB <br> mDice |   FPS   |
+|:--------------------------------------:|:-----------------:|:-------------------:|:-------:|
+|              HarDNet-MSEG              |       0.9139       |        0.8723        | **108** |
+|              SSFormer                  |       0.9357       |      0.8339      |   -    |
+|              HarDNet-DFUS              |       0.9363       |      **0.8945**      |   30    |
+|              FCBFormer                 |       **0.9385**       |      0.8735      |   -    |
+
+(FPS measures on V100) mIoU
+|                 Models                 | Kvasir <br> mIoU | ClinicDB <br> mIoU |   FPS   |
+|:--------------------------------------:|:-----------------:|:-------------------:|:-------:|
+|              HarDNet-MSEG              |       0.8624       |        0.8134        | **108** |
+|              SSFormer                  |       **0.8905**       |      0.7573      |   -    |
+|              HarDNet-DFUS              |       0.8894       |      **0.8370**      |   30    |
+|              FCBFormer                 |       0.8903       |      0.8038      |   -    |
 
 ### Sample Inference and Visualized Results of Kvasir-SEG Dataset
 <p align="center">
