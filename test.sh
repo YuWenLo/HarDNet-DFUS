@@ -1,0 +1,7 @@
+python train.py --augmentation --data_path /work/wagw1014/OCELOT/ --batchsize 16 --seed 42 --dataratio 0.8 --modelname fchardnet --weight /home/wagw1014/FCHarDNet/weights/hardnet_petite_base.pth --trainsize 1024 --lr 0.0001 --epoch 300 --name cell_1c_r5_colorv3 --loss structure_loss --cell_size 5 --color_ver 1
+
+python train.py --augmentation --data_path /work/wagw1014/OCELOT/ --batchsize 16 --seed 42 --dataratio 0.8 --modelname fchardnet --weight /home/wagw1014/FCHarDNet/weights/hardnet_petite_base.pth --trainsize 1024 --lr 0.0001 --epoch 300 --name cell_1c_r5_colorv4 --loss structure_loss --cell_size 5 --color_ver 2
+
+python train.py --augmentation --data_path /work/wagw1014/OCELOT/ --batchsize 16 --seed 42 --dataratio 0.8 --modelname fchardnet --weight /home/wagw1014/FCHarDNet/weights/hardnet_petite_base.pth --trainsize 1024 --lr 0.0001 --epoch 300 --name cell_1c_r5_colorv5 --loss structure_loss --cell_size 5 --color_ver 3
+
+python train.py --augmentation --data_path /work/wagw1014/OCELOT/ --batchsize 16 --seed 42 --dataratio 0.8 --modelname fchardnet --weight /home/wagw1014/FCHarDNet/weights/hardnet_petite_base.pth --trainsize 1024 --lr 0.0001 --epoch 300 --name cell_1c_r5_colorv6 --loss structure_loss --cell_size 5 --color_ver 4

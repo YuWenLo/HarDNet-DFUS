@@ -236,7 +236,7 @@ class KingNet(nn.Module):
         
         if(pretrained):
             ##Modify: pretrained path
-            weight_file = 'weights/kingnet53.pth'
+            weight_file = "/home/wagw1014/DFUC/69_lawin/lib/kingnet53.pth"
             if not os.path.isfile(weight_file):
                 print(weight_file, 'is not found')
                 exit(0)

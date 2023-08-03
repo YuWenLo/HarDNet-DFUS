@@ -1,3 +1,5 @@
+# cell 5fold / tissue 5fold
+
 # albumentations
 import torch
 import torch.utils.data as data
@@ -12,9 +14,6 @@ from albumentations.pytorch import ToTensorV2
 from utils.utils import square_padding
 from pathlib import Path
 from PIL import Image
-from sklearn.model_selection import train_test_split
-
-
 
 # +
 def calculatemns(img_list, size, rect):
@@ -51,49 +50,15 @@ def split_data(length, ratio, k=0, seed=42, k_fold=1):
         seed: seed for reproducing the random result
         k_fold: # fold for cross-validation
     '''
-    if ratio == 1:
-        random.seed(seed)
-        val_idx = random.sample(range(length), k=length)
-        if k_fold == 1:
-            val_idx = val_idx[:round(length * (1-ratio))]
-        else:
-            val_idx = val_idx[(length//k_fold)*k: (length//k_fold)*(k+1)]
-        
-        train_idx = [x for x in range(length) if x not in val_idx]
-        return train_idx, val_idx, val_idx
-    elif ratio == 0:
-        val_idx = np.linspace(0, length - 1, length).astype("int")
-        return val_idx, val_idx, val_idx
-        
-    train_size = int(ratio * length)
-    valid_size = int(round(length * (1-ratio)/2))
-    test_size = int(round(length * (1-ratio)/2))
-
-    train_indices, test_indices = train_test_split(
-        np.linspace(0, length - 1, length).astype("int"),
-        test_size=test_size,
-        random_state=seed,
-    )
-
+    random.seed(seed)
+    val_idx = random.sample(range(length), k=length)
     if k_fold == 1:
-        train_indices, val_indices = train_test_split(
-            train_indices, test_size=valid_size, random_state=seed
-        )
-
-        print(len(train_indices), " ", len(val_indices), " ", len(test_indices))
-        return train_indices, val_indices, test_indices
-
+        val_idx = val_idx[:round(length * (1-ratio))]
     else:
-        train_indices, val_indices = train_test_split(
-            train_indices, test_size=valid_size, random_state=seed
-        )
-        fold_length = length - test_size - valid_size
-        val_idx = train_indices
-        val_idx = val_idx[(fold_length//k_fold)*k: (fold_length//k_fold)*(k+1)]
-        train_idx = [x for x in train_indices if x not in val_idx]
-
-        print(len(train_idx), " ", len(val_idx), " ", len(test_indices))
-        return train_idx, val_idx, test_indices
+        val_idx = val_idx[(length//k_fold)*k: (length//k_fold)*(k+1)]
+    
+    train_idx = [x for x in range(length) if x not in val_idx]
+    return train_idx, val_idx, val_idx
 
 
 # -
@@ -111,11 +76,19 @@ class create_dataset(data.Dataset):
         k_fold: # fold for cross-validation
         seed: seed for reproducing the random result
     '''
-    def __init__(self, data_path, trainsize, augmentations, train=True, train_ratio=0.8, rect=False, k=0, k_fold=1, seed=None):
+    def __init__(self, data_path, trainsize, augmentations, train=True, train_ratio=0.8, rect=False, k=0, k_fold=1, seed=42, num_class=3, mode="cell"):
+        self.data_path = data_path
         self.trainsize = trainsize
         self.augmentations = augmentations
         self.ratio = train_ratio
         self.rect = rect
+        self.mode = mode
+        self.mean = [0.7610, 0.5776, 0.6962]
+        self.std = [0.1515, 0.1870, 0.1426]
+        if self.mode == "tissue":
+            self.mean = [0.7653, 0.5833, 0.6994]
+            self.std = [0.1548, 0.1969, 0.1566]
+        
         try:
             '''
             We assert that your folder of images/masks is named by "images"/"masks"
@@ -124,18 +97,17 @@ class create_dataset(data.Dataset):
             f = []
             for p in data_path if isinstance(data_path, list) else [data_path]:
                 p = Path(p)
-                f += glob.glob(str(p / '**' / '*.*'), recursive=True)
+                f += glob.glob(str(p / '**' / '*.*'), recursive=False)
 
             self.images = sorted([x for x in f if ('images' in x) and (x.endswith('.jpg') or x.endswith('.png'))])
-            self.gts = sorted([x for x in f if ('masks' in x) and (x.endswith('.jpg') or x.endswith('.png'))])
+            self.gts = self.images
             length = len(self.images)
             
-            #mean, std = calculatemns(self.images, self.trainsize, self.rect)
-            #print('mean:', mean, ' std:', std)
-            train_idx, val_idx, test_idx = split_data(length, self.ratio, k=k, seed=seed, k_fold=k_fold)
+            if self.ratio != 1.0 and self.ratio != 0.0:
+                train_idx, val_idx, test_idx = split_data(length, self.ratio, k=k, seed=seed, k_fold=k_fold)
             
             if train:
-                if self.ratio != 1:
+                if self.ratio != 1.0:
                     self.images = sorted([self.images[idx] for idx in train_idx])
                     self.gts = sorted([self.gts[idx] for idx in train_idx])
                 
@@ -144,7 +116,7 @@ class create_dataset(data.Dataset):
                 print('load %g training data from %g images in %s'%(len(self.images), length, data_path))
             
             else:
-                if self.ratio != 0:
+                if self.ratio != 0.0:
                     self.images = sorted([self.images[idx] for idx in val_idx])
                     self.gts = sorted([self.gts[idx] for idx in val_idx])
                 
@@ -159,10 +131,10 @@ class create_dataset(data.Dataset):
         if self.augmentations == True:
             print("data augmentation 2")
             self.transform = A.Compose([
-                A.OneOf([
-                    A.CenterCrop(self.trainsize, self.trainsize, p=1),
-                    A.RandomCrop(self.trainsize, self.trainsize, p=1),
-                ], p=0.3),
+                # A.OneOf([
+                #     A.CenterCrop(self.trainsize, self.trainsize, p=1),
+                #     A.RandomCrop(self.trainsize, self.trainsize, p=1),
+                # ], p=0.3),
                 A.HorizontalFlip(p=0.5),
                 A.VerticalFlip(p=0.5),
                 A.ShiftScaleRotate(shift_limit=0.1 ,scale_limit=0.1, rotate_limit=45, p=0.5),
@@ -170,58 +142,61 @@ class create_dataset(data.Dataset):
                     A.CoarseDropout(max_holes=8, max_height=20, max_width=20, min_holes=None, min_height=None, min_width=None, fill_value=0, p=1),
                     A.GaussNoise(var_limit=(10.0, 50.0), mean=0, p=1),
                 ], p=0.5)
-            ])
+            ],additional_targets={'mask1': 'mask', 'mask2': 'mask'})
    
         else:
             print("no data augmentation")
-            self.transform = A.Compose([A.Resize(self.trainsize, self.trainsize)])
-        self.nom = transforms.Normalize([0.485, 0.456, 0.406],[0.229, 0.224, 0.225])
-        self.totensor = A.Compose([ToTensorV2()])
+            self.transform = A.Compose([A.Resize(self.trainsize, self.trainsize)],additional_targets={'mask1': 'mask', 'mask2': 'mask'})
+        self.nom = transforms.Normalize(self.mean, self.std)
+        self.totensor = A.Compose([ToTensorV2()],additional_targets={'mask1': 'mask', 'mask2': 'mask'})
+        
         
     def __getitem__(self, index):
         # https://github.com/pytorch/vision/issues/9
         seed = np.random.randint(2147483647) # make a seed with numpy generator  #21474
+        random.seed(seed) # apply this seed to img tranfsorms
+        torch.manual_seed(seed) # needed for torchvision 0.7
 
         # Read an image with OpenCV
         image = cv2.imread(self.images[index])
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        gt = cv2.imread(self.gts[index], cv2.IMREAD_GRAYSCALE)
-        name = self.gts[index]
+        name = self.gts[index].split('/')[-1].split('.')[0]
+        name = os.path.join(self.data_path, 'masks/') + name
         
-        if self.rect:
-            if image.shape[0] > image.shape[1]:
-                total = A.PadIfNeeded(p=1, min_height=image.shape[0], min_width=image.shape[0], border_mode=cv2.BORDER_CONSTANT, value=0, mask_value=0)(image=image, mask=gt)
-                image = total['image']
-                gt = total['mask']
-                assert image.shape[0] == image.shape[1], '1, %s, %g/%g' % (self.images[index], image.shape[0], image.shape[1])
-            elif image.shape[0] < image.shape[1]:
-                total = A.PadIfNeeded(p=1, min_height=image.shape[1], min_width=image.shape[1], border_mode=cv2.BORDER_CONSTANT, value=0, mask_value=0)(image=image, mask=gt)
-                image = total['image']
-                gt = total['mask']
-                assert image.shape[0] == image.shape[1], '2, %s, %g/%g' % (self.images[index], image.shape[0], image.shape[1])
-            else:
-                pass
-            
+        name_0 = name + '_0.jpg'
+        name_1 = name + '_1.jpg'
+        name_2 = name + '_2.jpg'
+        gt0 = cv2.imread(name_0, cv2.IMREAD_GRAYSCALE)
+        gt1 = cv2.imread(name_1, cv2.IMREAD_GRAYSCALE)
+        gt2 = cv2.imread(name_2, cv2.IMREAD_GRAYSCALE)
+        
+        
         if self.augmentations:
-            total = self.transform(image=image, mask=gt)
+            total = self.transform(image=image, mask=gt0, mask1=gt1, mask2=gt2)
             image = total["image"]
-            gt = total['mask']
-            total = A.ColorJitter(brightness=0.5, contrast=0.5, saturation=0, hue=0, p=0.3)(image=image)
-            image = total["image"]
+            gt0 = total['mask']
+            gt1 = total['mask1']
+            gt2 = total['mask2']
             
-        total = A.Resize(self.trainsize, self.trainsize)(image=image, mask=gt)
-        image = total["image"]
-        gt = total['mask']
-        random.seed(seed) # apply this seed to img tranfsorms
-        torch.manual_seed(seed) # needed for torchvision 0.7
+            
+        # total = A.Resize(self.trainsize, self.trainsize)(image=image, mask=gt)
+        # image = total["image"]
+        # gt = total['mask']
         
         image_final = self.totensor(image=image)
         image = image_final["image"]
         image = self.nom(image)
 
-        gt_final = self.totensor(image=total["mask"], mask=total["mask"])
-        gt = gt_final["mask"]
-        return image, gt.unsqueeze(0), name
+        gt_final = self.totensor(image=gt0, mask=gt0, mask1=gt1, mask2=gt2)
+        gt0 = gt_final['mask']
+        gt1 = gt_final['mask1']
+        gt2 = gt_final['mask2']
+
+        gt = torch.cat((gt0.unsqueeze(0), gt1.unsqueeze(0), gt2.unsqueeze(0)), 0)
+        del gt0, gt1, gt2
+
+        # return image, gt.unsqueeze(0), name
+        return image, gt, name
 
     def __len__(self):
         return self.size
@@ -240,8 +215,8 @@ class test_dataset(data.Dataset):
             f = []
             for p in data_path if isinstance(data_path, list) else [data_path]:
                 p = Path(p)
-                f += glob.glob(str(p / '**' / '*.*'), recursive=True)
-            self.images = sorted([x for x in f if 'image' in x])
+                f += glob.glob(str(p / '*.*'), recursive=False)
+            self.images = sorted([x for x in f])
             length = len(self.images)
             
         except Exception as e:
@@ -257,7 +232,7 @@ class test_dataset(data.Dataset):
             transforms.Resize((self.trainsize, self.trainsize)),
             transforms.ToTensor(), 
             #transforms.Normalize(mean, std)])
-            transforms.Normalize([0.485, 0.456, 0.406],[0.229, 0.224, 0.225])])
+            transforms.Normalize(self.mean, self.std)])
             
     def __getitem__(self, index):
         name = self.images[index]

@@ -1,0 +1,3 @@
+# ninja log v5
+0	26271	1685948182053015665	/home/wagw1014/fchardnet_ocelot/CatConv2d/build/temp.linux-x86_64-3.8/catconv2d_cuda.o	299e63250d5e31db
+0	235805	1685948391575990240	/home/wagw1014/fchardnet_ocelot/CatConv2d/build/temp.linux-x86_64-3.8/catconv2d_cuda_kernel.o	27ac268e84cefe3f
